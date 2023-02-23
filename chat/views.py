@@ -1,10 +1,8 @@
-import django.contrib.messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpRequest
 from chat.forms import RoomForm
 from chat.models import Room
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView
 
@@ -24,9 +22,7 @@ def room_new(request):
     if request.method == "POST":
         form = RoomForm(request.POST)
         if form.is_valid():
-            created_room: Room = form.save(commit=False)
-            created_room.owner=request.user
-            created_room.save()
+            created_room: Room = form.save()
             return redirect("chat:room_chat", created_room.pk)
     else:
         form = RoomForm()
@@ -42,28 +38,6 @@ def room_chat(request:HttpRequest, room_pk: int)->HttpResponse:
         "room":room,
     })
 
-@login_required
-def room_delete(request:HttpRequest, room_pk: int)->HttpResponse:
-    room = get_object_or_404(Room, pk=room_pk)
-
-    if room.owner != request.user:
-        messages.error(request, "채팅방 소유자가 아닙니다.")
-        return redirect("chat:index")
-
-    if request.method =="POST":
-        room.delete()
-        messages.success(request, "채팅방을 삭제했습니다.")
-        return redirect("chat:index")
-
-    return render(request, "chat/room_confirm_delete.html",{
-        "room": room,
-    })
-
-
-
-
-
-
 # class RoomCreateView(LoginRequiredMixin, CreateView):
 #     form_class = RoomForm
 #     template_name = "chat/room_form.html"
@@ -73,7 +47,6 @@ def room_delete(request:HttpRequest, room_pk: int)->HttpResponse:
 #         return resolve_url("chat:room_chat", created_room.pk)
 #
 # room_new
-
 
 
 
