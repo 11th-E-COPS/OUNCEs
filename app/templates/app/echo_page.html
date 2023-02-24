@@ -9,7 +9,7 @@
 Websocket Echo..
 
 <script>
-    const ws = new WebSocket("wss://localhost:8000/ws/echo/");
+    const ws = new WebSocket("ws://localhost:8000/ws/echo/");
 
     ws.onopen = () => {
         console.log("Connected to websocket server");

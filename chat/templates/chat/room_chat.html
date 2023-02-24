@@ -3,7 +3,7 @@
 {% block extra-style %}
 <style>
     .chat-message > div {
-        background-color: #3b3b3d;
+        background-color: #17A2B8;
         color: #e1e1e1;
         border-radius: 0.8em;
         padding: 0.4em;
@@ -17,7 +17,7 @@
         text-align: right;
      }
     .chat-message.me >div{
-        background-color: rgba(0, 255, 255, 0.788);
+        background-color: #17A2B8;
         color: #fff;
         text-align: left;
     }
@@ -90,7 +90,6 @@
             this.chat_messages_tag.appendChild(element);
             this.chat_messages_tag.scrollTop = this.chat_messages_tag.scrollHeight;
         },
-
         onsubmit(event) {
             event.preventDefault();
 
@@ -100,8 +99,6 @@
 
             const { message } = props;
             console.log("웹소켓으로 전송할 메세지 :", message);
-
-
             this.ws.send(JSON.stringify({
                 type : "chat.message",
                 message : message,
@@ -147,8 +144,8 @@
          },
     };
     handlers.init();
-    {#const protocol = location.protocol === "http:" ? "ws:" : "wss:";#}
-    const ws_url = "wss://" + location.host + "/ws" + location.pathname+"/";
+    const protocol = location.protocol === "http:" ? "ws:" : "wss:";
+    const ws_url = protocol + "//" + location.host + "/ws" + location.pathname;
     handlers.connect(ws_url)
     </script>
 {% endblock %}
