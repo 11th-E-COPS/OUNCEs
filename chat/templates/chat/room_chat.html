@@ -60,8 +60,9 @@
             document.querySelector("#message_form").addEventListener("submit", this.onsubmit.bind(this));
         },
         connect(ws_url){
-            if(this.ws){ this.ws.close();}
+            if(this.ws){ this.ws.close(); }
             this.ws = new WebSocket(ws_url || this.ws?.url);
+
             this.ws.onopen = this.onopen.bind(this);
             this.ws.onclose = this.onclose.bind(this);
             this.ws.onerror = this.onerror.bind(this);
@@ -79,7 +80,7 @@
                 element.className+=" me";
             }
             else if (sender){
-                footer = `from ${sender}`;
+                footer = ` from ${sender}`;
             }
 
             const wrapper = document.createElement("div");
@@ -146,8 +147,8 @@
          },
     };
     handlers.init();
-    const protocol = location.protocol === "http:" ? "ws:" : "wss:";
-    const ws_url = protocol + "//" + location.host + "/wss" + location.pathname;
+    {#const protocol = location.protocol === "http:" ? "ws:" : "wss:";#}
+    const ws_url = "wss://" + location.host + "/ws" + location.pathname+"/";
     handlers.connect(ws_url)
     </script>
 {% endblock %}
