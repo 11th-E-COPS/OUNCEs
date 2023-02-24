@@ -84,7 +84,6 @@
             }
 
             const wrapper = document.createElement("div");
-            {#주의: innerHTML은 유저의 HTML이 그대로 상대에 전달되어 수행 -> 보안 위험#}
             wrapper.textContent = message+footer;
             element.appendChild(wrapper);
 
@@ -134,9 +133,11 @@
             const message_json = event.data;
             console.log("메세지 수신: ", message_json);
 
-            const {type, message, sender} = JSON.parse(message_json);
+            const message_obj = JSON.parse(message_json);
+            const {type} = message_obj;
             switch (type){
                 case "chat.message":
+                    const {message, sender} = message_obj;
                     this.append_message(message, sender);
                     break;
                 default:
